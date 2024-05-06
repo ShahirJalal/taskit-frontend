@@ -1,1 +1,56 @@
-<app-login></app-login>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Commits</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Latest Commits</h1>
+    <ul id="commit-list">
+        <!-- Commit items will be dynamically added here -->
+    </ul>
+
+    <script>
+        // GitHub repository details
+        const owner = 'ShahirJalal';
+        const repo = 'taskit-frontend';
+        
+        // GitHub API endpoint for fetching commits
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/commits`;
+
+        // Function to fetch commits from GitHub API
+        async function fetchCommits() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching commits:', error);
+            }
+        }
+
+        // Function to render commits on the web page
+        async function renderCommits() {
+            const commitList = document.getElementById('commit-list');
+            const commits = await fetchCommits();
+
+            // Clear existing list items
+            commitList.innerHTML = '';
+
+            // Create and append list items for each commit
+            commits.forEach(commit => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${commit.commit.author.name}: ${commit.commit.message}`;
+                commitList.appendChild(listItem);
+            });
+        }
+
+        // Call the renderCommits function to display commits on page load
+        renderCommits();
+    </script>
+</body>
+</html>
