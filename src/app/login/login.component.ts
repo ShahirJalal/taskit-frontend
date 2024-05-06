@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -6,5 +7,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  username: string = '';
+  password: string = '';
 
+  constructor(private http: HttpClient) { }
+
+  onSubmit() {
+    this.http.post<any>('http://localhost:8080/api/users/login', { username: this.username, password: this.password })
+      .subscribe(
+        response => {
+          console.log(response);
+        },
+        error => {
+          console.error('Login failed:', error);
+        }
+      );
+  }
 }
