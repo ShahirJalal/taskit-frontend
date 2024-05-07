@@ -19,12 +19,9 @@
       <td>{{ task.urgency }}</td>
       <td>{{ task.status }}</td>
       <td>
-        <button (click)="completeTask(task)">Complete</button>
-        <button (click)="editTask(task)">Edit</button>
-        <button (click)="deleteTask(task)">Delete</button>
-        <!-- <button>Complete</button>
-        <button>Edit</button>
-        <button>Delete</button> -->
+        <button (click)="completeTask(task)"><i class="pi pi-check"></i> Complete</button>
+        <button (click)="editTask(task)"><i class="pi pi-file-edit"></i> Edit</button>
+        <button (click)="deleteTask(task)"><span class="pi pi-trash"></span> Delete</button>
       </td>
     </tr>
   </tbody>
