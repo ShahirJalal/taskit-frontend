@@ -16,6 +16,12 @@ export class TaskListComponent implements OnInit {
     this.loadTasks();
   }
 
+  visible: boolean = false;
+
+  showEditDialog() {
+      this.visible = true;
+  }
+
   loadTasks(): void {
     this.taskService.getAllTasks().subscribe(tasks => {
       this.tasks = tasks;
