@@ -3,6 +3,7 @@
 <table>
   <thead>
     <tr>
+      <th>Id</th>
       <th>Username</th>
       <th>Title</th>
       <th>Description</th>
@@ -13,6 +14,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let task of tasks">
+      <td>{{ task.id }}</td>
       <td>{{ task.username }}</td>
       <td>{{ task.title }}</td>
       <td>{{ task.description }}</td>
@@ -26,7 +28,7 @@
       </td>
     </tr>
   </tbody>
-  <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+  <p-dialog header="Edit Task" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
     <p class="m-0">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
