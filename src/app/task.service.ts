@@ -28,4 +28,9 @@ export class TaskService {
     const url = `${this.apiUrl}/${taskId}`;
     return this.http.delete<void>(url);
   }
+
+  getTaskById(taskId: number): Observable<Task> {
+    const url = `${this.apiUrl}/${taskId}`;
+    return this.http.get<Task>(url);
+  }
 }
