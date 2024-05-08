@@ -9,6 +9,8 @@ import { Task } from '../task.model';
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
+  visible: boolean = false;
+  selectedTaskId: number | undefined;
 
   constructor(private taskService: TaskService) { }
 
@@ -16,10 +18,15 @@ export class TaskListComponent implements OnInit {
     this.loadTasks();
   }
 
-  visible: boolean = false;
+  showEditDialog(taskId: number): void {
+    this.selectedTaskId = taskId;
+    localStorage.setItem('taskId', taskId.toString());
+    this.visible = true;
+    console.log('Editing task with ID:', taskId);
+  }
 
-  showEditDialog() {
-      this.visible = true;
+  closeEditDialog(): void {
+    localStorage.removeItem('taskId');
   }
 
   loadTasks(): void {
@@ -37,11 +44,6 @@ export class TaskListComponent implements OnInit {
         this.tasks[index] = updatedTask;
       }
     });
-  }
-
-  editTask(task: Task): void {
-    // Implement logic to edit the task
-    console.log('Editing task:', task);
   }
 
   deleteTask(task: Task): void {
