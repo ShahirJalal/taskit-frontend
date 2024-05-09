@@ -13,6 +13,7 @@ import { TaskListComponent } from './task-list/task-list.component';
 import { DialogModule } from 'primeng/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditTaskDialogComponent } from './edit-task-dialog/edit-task-dialog.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { EditTaskDialogComponent } from './edit-task-dialog/edit-task-dialog.com
     RegisterComponent,
     ConfirmationComponent,
     TaskListComponent,
-    EditTaskDialogComponent
+    EditTaskDialogComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,

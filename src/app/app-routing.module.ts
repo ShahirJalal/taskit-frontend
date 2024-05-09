@@ -3,14 +3,16 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
-import { TaskListComponent } from './task-list/task-list.component'; // Import the TaskListComponent
+import { TaskListComponent } from './task-list/task-list.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 const routes: Routes = [
-  // { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login page by default
+  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to login page by default
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'confirmation', component: ConfirmationComponent },
-  { path: 'tasks', component: TaskListComponent } // Define the route for TaskListComponent
+  { path: 'tasks', component: TaskListComponent },
+  { path: 'users', component: UserListComponent }
 ];
 
 @NgModule({
