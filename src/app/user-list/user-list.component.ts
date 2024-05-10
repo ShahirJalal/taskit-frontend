@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { User } from '../user.model';
 import { UserService } from '../user.service';
 
@@ -10,7 +11,9 @@ import { UserService } from '../user.service';
 export class UserListComponent implements OnInit {
   users: User[] = [];
   visible: boolean = false;
+  visibleAddUser: boolean = false;
   selectedUser: User | null = null; // Property to store the selected user for editing
+  newUser: any = {};
 
   constructor(private userService: UserService) { }
 
@@ -24,7 +27,7 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  editUser(user: User): void {
+  openEditDialog(user: User): void {
     // Open the dialog
     this.visible = true;
     // Set the selected user for editing
@@ -34,5 +37,30 @@ export class UserListComponent implements OnInit {
   closeEditDialog(): void {
     // Close the dialog
     this.visible = false;
+  }
+
+  openAddDialog() {
+    this.visibleAddUser = true;
+  }
+
+  closeAddDialog() {
+    this.visibleAddUser = false;
+  }
+
+  addUser() {
+    this.userService.addUser(this.newUser).subscribe(() => {
+      this.loadUsers(); // Reload users after adding a new user
+      this.closeAddDialog(); // Close the add user dialog
+    });
+  }
+
+  saveUser(): void {
+    // Save the edited user
+    if (this.selectedUser) {
+      this.userService.updateUser(this.selectedUser).subscribe(updatedUser => {
+        // Optionally, handle success or error
+        this.visible = false; // Close the dialog after saving
+      });
+    }
   }
 }

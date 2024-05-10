@@ -14,6 +14,9 @@ import { DialogModule } from 'primeng/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditTaskDialogComponent } from './edit-task-dialog/edit-task-dialog.component';
 import { UserListComponent } from './user-list/user-list.component';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { UserListComponent } from './user-list/user-list.component';
     FormsModule,
     HttpClientModule,
     DialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ButtonModule,
+    InputTextModule,
+    PasswordModule
   ],
   providers: [],
   bootstrap: [AppComponent]

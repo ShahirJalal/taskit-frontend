@@ -11,6 +11,9 @@ export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
   visible: boolean = false;
   selectedTaskId: number | undefined;
+  addDialogVisible: boolean = false;
+  newTask: any = {};
+  selectedTask: Task | null = null;
 
   constructor(private taskService: TaskService) { }
 
@@ -25,6 +28,27 @@ export class TaskListComponent implements OnInit {
     console.log('Editing task with ID:', taskId);
   }
 
+  openEditDialog(task: Task): void {
+    // Open the dialog
+    this.visible = true;
+    // Set the selected user for editing
+    this.selectedTask = task;
+  }
+
+  saveTask(): void {
+    // Save the edited user
+    if (this.selectedTask) {
+      this.taskService.updateTask(this.selectedTask).subscribe(updatedTask => {
+        // Optionally, handle success or error
+        this.visible = false; // Close the dialog after saving
+      });
+    }
+  }
+
+  showAddDialog(): void {
+    this.addDialogVisible = true;
+  }
+
   closeEditDialog(): void {
     localStorage.removeItem('taskId');
   }
@@ -35,16 +59,46 @@ export class TaskListComponent implements OnInit {
     });
   }
 
+  addTask(): void {
+    this.taskService.createTask(this.newTask).subscribe(
+      (createdTask: Task) => {
+        // If successful, add the created task to the local tasks list
+        this.tasks.push(createdTask);
+        // Reset the newTask object to clear the form fields
+        this.newTask = {};
+        // Close the add task dialog
+        this.addDialogVisible = false;
+      },
+      (error) => {
+        // Handle error if any
+        console.error('Error adding task:', error);
+        // Optionally, show a message to the user
+      }
+    );
+  }  
+
+  // completeTask(task: Task): void {
+  //   // Update the task status to 'completed' using the task service
+  //   this.taskService.updateTask(task.id, { ...task, status: 'completed' }).subscribe(updatedTask => {
+  //     // If successful, update the local tasks list with the updated task
+  //     const index = this.tasks.findIndex(t => t.id === updatedTask.id);
+  //     if (index !== -1) {
+  //       this.tasks[index] = updatedTask;
+  //     }
+  //   });
+  // }
+
   completeTask(task: Task): void {
     // Update the task status to 'completed' using the task service
-    this.taskService.updateTask(task.id, { ...task, status: 'completed' }).subscribe(updatedTask => {
+    task.status = 'completed'; // Update the status property
+    this.taskService.updateTask(task).subscribe(updatedTask => {
       // If successful, update the local tasks list with the updated task
       const index = this.tasks.findIndex(t => t.id === updatedTask.id);
       if (index !== -1) {
         this.tasks[index] = updatedTask;
       }
     });
-  }
+  }  
 
   deleteTask(task: Task): void {
     // Delete the task using the task service
