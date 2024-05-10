@@ -15,7 +15,15 @@ export class RegisterComponent {
   constructor(private http: HttpClient, private router: Router) { } // Inject Router
 
   onSubmit() {
-    this.http.post<any>('http://localhost:8080/api/users', { username: this.username, email: this.email, password: this.password })
+    // Add 'user' role to the user data before registration
+    const userData = {
+      username: this.username,
+      email: this.email,
+      password: this.password,
+      role: 'user'
+    };
+
+    this.http.post<any>('http://localhost:8080/api/users', userData)
       .subscribe(
         response => {
           // Handle successful registration
