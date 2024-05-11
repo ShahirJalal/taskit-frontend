@@ -8,6 +8,7 @@
             <th>Username</th>
             <th>Email</th>
             <th>Password</th>
+            <th>Role</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -17,6 +18,7 @@
             <td>{{ user.username }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.password }}</td>
+            <td>{{ user.role }}</td>
             <td>
                 <p-button (click)="openEditDialog(user)" icon="pi pi-file-edit" label="Edit"></p-button>
             </td>
@@ -60,6 +62,10 @@
         <div>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" [(ngModel)]="newUser.password">
+        </div>
+        <div>
+            <label for="role">Role:</label>
+            <input type="text" id="role" name="role" [(ngModel)]="newUser.role">
         </div>
         <p-button type="submit" label="Submit" icon="pi pi-check"></p-button>
     </form>
