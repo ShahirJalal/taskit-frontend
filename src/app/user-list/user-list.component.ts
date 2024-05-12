@@ -34,6 +34,8 @@ export class UserListComponent implements OnInit {
     this.selectedUser = user;
   }
 
+  //Commit test
+
   closeEditDialog(): void {
     // Close the dialog
     this.visible = false;
