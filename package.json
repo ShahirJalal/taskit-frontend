@@ -21,7 +21,6 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
-    "bootstrap": "^5.3.3",
     "express": "^4.19.2",
     "primeicons": "^7.0.0",
     "primeng": "^16.9.1",
