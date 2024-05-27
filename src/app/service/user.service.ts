@@ -7,8 +7,8 @@ import {User} from '../model/user.model';
   providedIn: 'root'
 })
 export class UserService {
-  // private apiUrl = 'http://localhost:8080/api/users';
-  private apiUrl = 'https://taskit-backend-551e091e845d.herokuapp.com/api/users';
+  private apiUrl = 'http://localhost:8080/api/users';
+  // private apiUrl = 'https://taskit-backend-551e091e845d.herokuapp.com/api/users';
 
   constructor(private http: HttpClient) {
   }

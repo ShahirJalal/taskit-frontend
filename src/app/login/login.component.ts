@@ -13,7 +13,8 @@ export class LoginComponent {
   constructor(private http: HttpClient) { }
 
   onSubmit() {
-    this.http.post<any>('https://taskit-backend-551e091e845d.herokuapp.com/api/users/login', { username: this.username, password: this.password })
+    // this.http.post<any>('https://taskit-backend-551e091e845d.herokuapp.com/api/users/login', { username: this.username, password: this.password })
+    this.http.post<any>('http://localhost:8080/api/users/login', { username: this.username, password: this.password })
       .subscribe(
         response => {
           console.log(response);
