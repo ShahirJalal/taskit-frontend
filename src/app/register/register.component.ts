@@ -23,8 +23,8 @@ export class RegisterComponent {
       role: 'user'
     };
 
-    // this.http.post<any>('https://taskit-backend-551e091e845d.herokuapp.com/api/users', userData)
-    this.http.post<any>('http://localhost:8080/api/users', userData)
+    this.http.post<any>('https://taskit-backend-551e091e845d.herokuapp.com/api/users', userData)
+    // this.http.post<any>('http://localhost:8080/api/users', userData)
       .subscribe(
         response => {
           // Handle successful registration

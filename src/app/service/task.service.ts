@@ -7,8 +7,8 @@ import {Task} from '../model/task.model';
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = 'http://localhost:8080/api/tasks';
-  // private apiUrl = 'https://taskit-backend-551e091e845d.herokuapp.com/api/tasks';
+  // private apiUrl = 'http://localhost:8080/api/tasks';
+  private apiUrl = 'https://taskit-backend-551e091e845d.herokuapp.com/api/tasks';
 
   constructor(private http: HttpClient) {
   }
