@@ -1,10 +1,29 @@
 <h2>Login</h2>
 <form (ngSubmit)="onSubmit()">
-    <input type="text" name="username" [(ngModel)]="username" placeholder="Username" required>
-    <br>
-    <input type="password" name="password" [(ngModel)]="password" placeholder="Password" required>
-    <br>
-    <button type="submit">Login</button>
+  <input type="text" name="username" [(ngModel)]="username" placeholder="Username" required>
+  <br>
+  <input type="password" name="password" [(ngModel)]="password" placeholder="Password" required>
+  <br>
+  <button type="submit">Login</button>
 </form>
 <br>
+<a routerLink="/users">Skip to /users</a><br>
+<a routerLink="/tasks">Skip to /tasks</a><br>
 <a routerLink="/register">Register</a>
+
+<h4>
+  Welcome to my personal project website!
+  <br><br>
+  Thank you for visiting. This site is currently under development, but feel free to explore and see what I'm working on. I've purposely included links that allow you to skip directly to certain pages, making it easier to navigate and see my capabilities in action. I hope you find it informative and reflective of my potential.
+  <br><br>
+  Additionally, do check my repository for this project. There is a frontend repo and a backend repo:
+  <br>
+  <a href="https://github.com/ShahirJalal/taskit-frontend" target="_blank">Frontend Repository</a>
+  <br>
+  <a href="https://github.com/ShahirJalal/taskit-backend" target="_blank">Backend Repository</a>
+  <br><br>
+  Your feedback is appreciated, and I look forward to connecting with you!
+  <br><br>
+  Best regards,<br>
+  Shahir Jalal
+</h4>
