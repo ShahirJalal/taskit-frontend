@@ -1,27 +1,44 @@
-# Frontend
+# Task Organizing App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.5.
+Welcome to the Task Organizing App! This project aims to provide a robust and user-friendly platform for managing tasks. Users can add, edit, and delete their tasks, set statuses, and indicate urgency levels. The application is built with Angular and PrimeNG on the frontend, Spring Boot on the backend, and PostgreSQL for database management. The app is deployed on Heroku.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Add Tasks**: Users can create new tasks.
+- **Edit Tasks**: Users can update the details of existing tasks.
+- **Delete Tasks**: Users can remove tasks.
+- **Task Status**: Users can set the status of each task (e.g., Pending, In Progress, Completed).
+- **Task Urgency**: Users can mark the urgency of each task (e.g., Low, Medium, High).
 
-## Code scaffolding
+## Technologies Used
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Frontend
+- **Angular**: A platform for building mobile and desktop web applications.
+- **PrimeNG**: A collection of rich UI components for Angular.
 
-## Build
+### Backend
+- **Spring Boot**: A framework for building production-ready applications in Java.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Database
+- **PostgreSQL**: A powerful, open-source object-relational database system.
 
-## Running unit tests
+### Deployment
+- **Heroku**: A platform as a service (PaaS) that enables developers to build, run, and operate applications entirely in the cloud.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Deployment
 
-## Running end-to-end tests
+The application is deployed on Heroku. You can visit the live application at:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+https://taskit-angular-frontend-5ad063cdf2a4.herokuapp.com
 
-## Further help
+## License
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Contact
+
+For any inquiries or feedback, please contact [shahirjalalhazli@gmail.com](mailto:shahirjalalhazli@gmail.com).
+
+---
+
+Thank you for using the Task Organizing App! We hope it helps you manage your tasks effectively.
