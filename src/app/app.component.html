@@ -1,2 +1,8 @@
-<!-- <app-login></app-login> -->
-<router-outlet></router-outlet>
+<div class="app-container">
+  <app-nav *ngIf="authService.isLoggedIn()"></app-nav>
+
+  <div class="app-content" [ngClass]="{'no-nav': !authService.isLoggedIn()}">
+    <p-toast></p-toast>
+    <router-outlet></router-outlet>
+  </div>
+</div>

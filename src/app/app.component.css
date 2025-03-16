@@ -1,0 +1,27 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-content {
+  flex: 1;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  transition: padding 0.3s ease;
+}
+
+.no-nav {
+ 
+  padding-top: 50px;
+ 
+}
+
+
+.app-container:not(:has(app-nav)) .app-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

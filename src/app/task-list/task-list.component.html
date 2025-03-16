@@ -1,92 +1,168 @@
-<h2>Task List</h2>
-<p-button (click)="showAddDialog()" icon="pi pi-plus" label="Add Task"></p-button>
+<div class="task-list-container">
+  <div class="task-list-header">
+    <h2>Task Management</h2>
+    <p-button (click)="showAddDialog()" icon="pi pi-plus" label="Add Task"></p-button>
+  </div>
 
-<p-dialog header="Add Task" [(visible)]="addDialogVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
-  [resizable]="false">
-  <form (ngSubmit)="addTask()">
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" [(ngModel)]="newTask.username">
-    </div>
-    <div>
+  <div *ngIf="isLoading" class="loading-container">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <p>Loading tasks...</p>
+  </div>
+
+  <div *ngIf="!isLoading && tasks.length === 0" class="no-tasks-container">
+    <p>No tasks found. Click "Add Task" to create a new task.</p>
+  </div>
+
+  <div *ngIf="!isLoading && tasks.length > 0" class="task-table-container">
+    <table class="task-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Urgency</th>
+          <th>Status</th>
+          <th *ngIf="authService.isAdmin()">Owner</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks">
+          <td>{{ task.id }}</td>
+          <td>{{ task.title }}</td>
+          <td>{{ task.description }}</td>
+          <td>
+            <span class="task-badge" [ngClass]="'urgency-' + (task.urgency ? task.urgency.toLowerCase() : 'medium')">
+              {{ task.urgency }}
+            </span>
+          </td>
+          <td>
+            <span class="task-badge" [ngClass]="'status-' + (task.status ? task.status.toLowerCase().replace(' ', '-') : 'new')">
+              {{ task.status }}
+            </span>
+          </td>
+          <td *ngIf="authService.isAdmin()">{{ task.username }}</td>
+          <td class="action-buttons">
+            <div *ngIf="task.status !== 'Completed'">
+              <p-button 
+                *ngIf="canEditTask(task)"
+                (click)="completeTask(task)" 
+                icon="pi pi-check" 
+                styleClass="p-button-sm p-button-success"
+                [text]="true"
+                pTooltip="Mark as completed">
+              </p-button>
+            </div>
+            <p-button 
+              *ngIf="canEditTask(task)"
+              (click)="openEditDialog(task)" 
+              icon="pi pi-pencil" 
+              styleClass="p-button-sm p-button-primary"
+              [text]="true"
+              pTooltip="Edit task">
+            </p-button>
+            <p-button 
+              *ngIf="canDeleteTask(task)"
+              (click)="deleteTask(task)" 
+              icon="pi pi-trash" 
+              styleClass="p-button-sm p-button-danger"
+              [text]="true"
+              pTooltip="Delete task">
+            </p-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p-dialog 
+    header="Edit Task" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [style]="{ width: '500px' }" 
+    [draggable]="false"
+    [resizable]="false" 
+    (onHide)="closeEditDialog()">
+    
+    <form *ngIf="selectedTask" class="task-form">
+      <div class="form-field">
+        <label for="taskId">ID:</label>
+        <input pInputText type="text" id="taskId" name="taskId" [(ngModel)]="selectedTask.id" readonly>
+      </div>
+      
+      <div class="form-field">
         <label for="title">Title:</label>
-        <input type="text" id="title" name="title" [(ngModel)]="newTask.title">
-    </div>
-    <div>
+        <input pInputText type="text" id="title" name="title" [(ngModel)]="selectedTask.title" required>
+      </div>
+      
+      <div class="form-field">
         <label for="description">Description:</label>
-        <input type="text" id="description" name="description" [(ngModel)]="newTask.description">
-    </div>
-    <div>
+        <textarea pInputTextarea id="description" name="description" [(ngModel)]="selectedTask.description" rows="3"></textarea>
+      </div>
+      
+      <div class="form-field">
         <label for="urgency">Urgency:</label>
-        <input type="text" id="urgency" name="urgency" [(ngModel)]="newTask.urgency">
-    </div>
-    <div>
+        <select pInputText id="urgency" name="urgency" [(ngModel)]="selectedTask.urgency">
+          <option *ngFor="let option of urgencyOptions" [value]="option">{{ option }}</option>
+        </select>
+      </div>
+      
+      <div class="form-field">
         <label for="status">Status:</label>
-        <input type="text" id="status" name="status" [(ngModel)]="newTask.status">
-    </div>
-    <p-button type="submit" label="Submit" icon="pi pi-check"></p-button>
-</form>
-</p-dialog>
-
-<table>
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Username</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Urgency</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let task of tasks">
-      <td>{{ task.id }}</td>
-      <td>{{ task.username }}</td>
-      <td>{{ task.title }}</td>
-      <td>{{ task.description }}</td>
-      <td>{{ task.urgency }}</td>
-      <td>{{ task.status }}</td>
-      <td>
-        <p-button (click)="completeTask(task)" icon="pi pi-check" label="Complete" severity="success"></p-button>&nbsp;
-        <p-button (click)="openEditDialog(task)" icon="pi pi-file-edit" label="Edit"></p-button>&nbsp;
-        <p-button (click)="deleteTask(task)" icon="pi pi-trash" label="Delete" severity="danger"></p-button>
-      </td>
-    </tr>
-  </tbody>
-  <p-dialog header="Edit User" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
-    [resizable]="false" (onHide)="closeEditDialog()">
-    <form *ngIf="selectedTask" (ngSubmit)="saveTask()">
-        <div>
-            <label for="taskId">Id:</label>
-            <input type="text" id="taskId" name="taskId" [(ngModel)]="selectedTask.id" readonly>
-        </div>
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" [(ngModel)]="selectedTask.username">
-        </div>
-        <div>
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" [(ngModel)]="selectedTask.title">
-        </div>
-        <div>
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description" [(ngModel)]="selectedTask.description">
-        </div>
-        <div>
-            <label for="urgency">Urgency:</label>
-            <input type="text" id="urgency" name="urgency" [(ngModel)]="selectedTask.urgency">
-        </div>
-        <div>
-            <label for="status">Status:</label>
-            <input type="text" id="status" name="status" [(ngModel)]="selectedTask.status">
-        </div>
-        <p-button type="submit" label="Submit" icon="pi pi-check" (click)="saveTask()"></p-button>
+        <select pInputText id="status" name="status" [(ngModel)]="selectedTask.status">
+          <option *ngFor="let option of statusOptions" [value]="option">{{ option }}</option>
+        </select>
+      </div>
+      
+      <div *ngIf="authService.isAdmin()" class="form-field">
+        <label for="username">Owner:</label>
+        <input pInputText type="text" id="username" name="username" [(ngModel)]="selectedTask.username">
+      </div>
     </form>
-</p-dialog>
-</table>
+    
+    <ng-template pTemplate="footer">
+      <p-button icon="pi pi-times" label="Cancel" styleClass="p-button-text" (click)="visible = false"></p-button>
+      <p-button icon="pi pi-check" label="Save" (click)="saveTask()"></p-button>
+    </ng-template>
+  </p-dialog>
 
-<a routerLink="/users">Skip to /users</a><br>
-<a routerLink="/register">Skip to /register</a><br>
-<a routerLink="/login">Skip to /login</a>
+  <p-dialog 
+    header="Add Task" 
+    [(visible)]="addDialogVisible" 
+    [modal]="true" 
+    [style]="{ width: '500px' }" 
+    [draggable]="false"
+    [resizable]="false">
+    
+    <form class="task-form">
+      <div class="form-field">
+        <label for="newTitle">Title:</label>
+        <input pInputText type="text" id="newTitle" name="title" [(ngModel)]="newTask.title" required>
+      </div>
+      
+      <div class="form-field">
+        <label for="newDescription">Description:</label>
+        <textarea pInputTextarea id="newDescription" name="description" [(ngModel)]="newTask.description" rows="3"></textarea>
+      </div>
+      
+      <div class="form-field">
+        <label for="newUrgency">Urgency:</label>
+        <select pInputText id="newUrgency" name="urgency" [(ngModel)]="newTask.urgency">
+          <option *ngFor="let option of urgencyOptions" [value]="option">{{ option }}</option>
+        </select>
+      </div>
+      
+      <div class="form-field">
+        <label for="newStatus">Status:</label>
+        <select pInputText id="newStatus" name="status" [(ngModel)]="newTask.status">
+          <option *ngFor="let option of statusOptions" [value]="option">{{ option }}</option>
+        </select>
+      </div>
+    </form>
+    
+    <ng-template pTemplate="footer">
+      <p-button icon="pi pi-times" label="Cancel" styleClass="p-button-text" (click)="addDialogVisible = false"></p-button>
+      <p-button icon="pi pi-check" label="Add" (click)="addTask()"></p-button>
+    </ng-template>
+  </p-dialog>
+</div>

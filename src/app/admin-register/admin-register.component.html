@@ -1,0 +1,51 @@
+<div class="admin-register-container">
+    <h2>Create Admin Account</h2>
+    <p class="warning-text">This is a secure operation that requires an admin API key.</p>
+
+    <form (ngSubmit)="onSubmit()" #adminForm="ngForm">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input pInputText type="text" id="username" name="username" [(ngModel)]="adminRequest.username"
+                placeholder="Admin username" required [disabled]="loading">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input pInputText type="email" id="email" name="email" [(ngModel)]="adminRequest.email"
+                placeholder="Admin email" required [disabled]="loading">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <p-password id="password" name="password" [(ngModel)]="adminRequest.password"
+                placeholder="Create a strong password" [toggleMask]="true" [disabled]="loading">
+            </p-password>
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <p-password id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword"
+                placeholder="Confirm password" [feedback]="false" [toggleMask]="true" [disabled]="loading">
+            </p-password>
+        </div>
+
+        <div class="form-group">
+            <label for="apiKey">Admin API Key</label>
+            <p-password id="apiKey" name="apiKey" [(ngModel)]="apiKey" placeholder="Enter admin API key"
+                [feedback]="false" [toggleMask]="true" [disabled]="loading">
+            </p-password>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+        </div>
+
+        <p-button type="submit" label="Create Admin" icon="pi pi-user-plus" [loading]="loading"
+            [disabled]="!adminForm.valid || !apiKey || loading">
+        </p-button>
+    </form>
+
+    <div class="back-link">
+        <a routerLink="/login">Back to Login</a>
+    </div>
+</div>

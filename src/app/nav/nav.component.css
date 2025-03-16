@@ -1,0 +1,29 @@
+.nav-container {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .app-logo {
+    margin-right: 20px;
+    padding: 10px 0;
+  }
+  
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3B82F6;
+    cursor: pointer;
+  }
+  
+  :host ::ng-deep .p-menubar {
+    background: none;
+    border: none;
+    flex-grow: 1;
+  }
+  
+  :host ::ng-deep .p-menubar .p-menubar-root-list {
+    margin-left: auto;
+  }

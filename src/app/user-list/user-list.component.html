@@ -1,76 +1,162 @@
-<h2>User List</h2>
-<p-button (click)="openAddDialog()" icon="pi pi-user-plus" label="Add User"></p-button>
-
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
+<div class="user-list-container">
+    <div class="user-list-header">
+      <h2>User Management</h2>
+      <p-button (click)="openAddDialog()" icon="pi pi-user-plus" label="Add User"></p-button>
+    </div>
+  
+    <div *ngIf="isLoading" class="loading-container">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+      <p>Loading users...</p>
+    </div>
+  
+    <div *ngIf="!isLoading && users.length === 0" class="no-users-container">
+      <p>No users found. Click "Add User" to create a new user.</p>
+    </div>
+  
+    <div *ngIf="!isLoading && users.length > 0" class="user-table-container">
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>ID</th>
             <th>Username</th>
             <th>Email</th>
-            <th>Password</th>
             <th>Role</th>
             <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let user of users">
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
             <td>{{ user.id }}</td>
             <td>{{ user.username }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.password }}</td>
-            <td>{{ user.role }}</td>
             <td>
-                <p-button (click)="openEditDialog(user)" icon="pi pi-file-edit" label="Edit"></p-button>
+              <span class="user-role-badge" [ngClass]="user.role === 'admin' ? 'role-admin' : 'role-user'">
+                {{ user.role }}
+              </span>
             </td>
-        </tr>
-    </tbody>
-</table>
-
-<p-dialog header="Edit User" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
-    [resizable]="false" (onHide)="closeEditDialog()">
-    <form *ngIf="selectedUser" (ngSubmit)="saveUser()">
-        <div>
-            <label for="userId">ID:</label>
-            <input type="text" id="userId" name="userId" [(ngModel)]="selectedUser.id" readonly>
+            <td class="action-buttons">
+              <p-button 
+                (click)="openEditDialog(user)" 
+                icon="pi pi-pencil" 
+                styleClass="p-button-sm p-button-primary" 
+                [text]="true"
+                pTooltip="Edit user">
+              </p-button>
+              <p-button 
+                *ngIf="user.id !== authService.getCurrentUser()?.id" 
+                (click)="confirmDelete(user)" 
+                icon="pi pi-trash" 
+                styleClass="p-button-sm p-button-danger" 
+                [text]="true"
+                pTooltip="Delete user">
+              </p-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <p-dialog 
+      header="Edit User" 
+      [(visible)]="visible" 
+      [modal]="true" 
+      [style]="{ width: '500px' }" 
+      [draggable]="false"
+      [resizable]="false" 
+      (onHide)="closeEditDialog()">
+      
+      <form *ngIf="selectedUser" class="user-form">
+        <div class="form-field">
+          <label for="userId">ID:</label>
+          <input pInputText type="text" id="userId" name="userId" [(ngModel)]="selectedUser.id" readonly>
         </div>
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" [(ngModel)]="selectedUser.username">
+        
+        <div class="form-field">
+          <label for="username">Username:</label>
+          <input pInputText type="text" id="username" name="username" [(ngModel)]="selectedUser.username" required>
         </div>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" [(ngModel)]="selectedUser.email">
+        
+        <div class="form-field">
+          <label for="email">Email:</label>
+          <input pInputText type="email" id="email" name="email" [(ngModel)]="selectedUser.email" required>
         </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="text" id="password" name="password" [(ngModel)]="selectedUser.password">
+        
+        <div class="form-field">
+          <label for="password">Password:</label>
+          <p-password id="password" name="password" [(ngModel)]="selectedUser.password" [feedback]="false" [toggleMask]="true" placeholder="Leave blank to keep unchanged"></p-password>
+          <small>Leave blank to keep the current password</small>
         </div>
-        <p-button type="submit" label="Submit" icon="pi pi-check" (click)="saveUser()"></p-button>
-    </form>
-</p-dialog>
-<p-dialog header="Add User" [(visible)]="visibleAddUser" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
-    [resizable]="false" (onHide)="closeAddDialog()">
-    <form (ngSubmit)="addUser()">
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" [(ngModel)]="newUser.username">
+        
+        <div class="form-field">
+          <label for="role">Role:</label>
+          <select pInputText id="role" name="role" [(ngModel)]="selectedUser.role">
+            <option *ngFor="let option of roleOptions" [value]="option">{{ option }}</option>
+          </select>
         </div>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" [(ngModel)]="newUser.email">
+      </form>
+      
+      <ng-template pTemplate="footer">
+        <p-button icon="pi pi-times" label="Cancel" styleClass="p-button-text" (click)="visible = false"></p-button>
+        <p-button icon="pi pi-check" label="Save" (click)="saveUser()"></p-button>
+      </ng-template>
+    </p-dialog>
+  
+    <p-dialog 
+      header="Add User" 
+      [(visible)]="visibleAddUser" 
+      [modal]="true" 
+      [style]="{ width: '500px' }" 
+      [draggable]="false"
+      [resizable]="false" 
+      (onHide)="closeAddDialog()">
+      
+      <form class="user-form">
+        <div class="form-field">
+          <label for="newUsername">Username:</label>
+          <input pInputText type="text" id="newUsername" name="username" [(ngModel)]="newUser.username" required>
         </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" [(ngModel)]="newUser.password">
+        
+        <div class="form-field">
+          <label for="newEmail">Email:</label>
+          <input pInputText type="email" id="newEmail" name="email" [(ngModel)]="newUser.email" required>
         </div>
-        <div>
-            <label for="role">Role:</label>
-            <input type="text" id="role" name="role" [(ngModel)]="newUser.role">
+        
+        <div class="form-field">
+          <label for="newPassword">Password:</label>
+          <p-password id="newPassword" name="password" [(ngModel)]="newUser.password" [toggleMask]="true" required></p-password>
         </div>
-        <p-button type="submit" label="Submit" icon="pi pi-check"></p-button>
-    </form>
-</p-dialog>
-
-<a routerLink="/tasks">Skip to /tasks</a><br>
-<a routerLink="/register">Skip to /register</a><br>
-<a routerLink="/login">Skip to /login</a>
+        
+        <div class="form-field">
+          <label for="newRole">Role:</label>
+          <select pInputText id="newRole" name="role" [(ngModel)]="newUser.role">
+            <option *ngFor="let option of roleOptions" [value]="option">{{ option }}</option>
+          </select>
+        </div>
+      </form>
+      
+      <ng-template pTemplate="footer">
+        <p-button icon="pi pi-times" label="Cancel" styleClass="p-button-text" (click)="visibleAddUser = false"></p-button>
+        <p-button icon="pi pi-check" label="Add" (click)="addUser()"></p-button>
+      </ng-template>
+    </p-dialog>
+  
+    <p-dialog
+      header="Confirm Delete"
+      [(visible)]="confirmDeleteVisible"
+      [modal]="true"
+      [style]="{ width: '450px' }"
+      [draggable]="false"
+      [resizable]="false">
+      
+      <div class="confirm-delete-content">
+        <i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: var(--red-500);"></i>
+        <p>Are you sure you want to delete the user <strong>{{ userToDelete?.username }}</strong>?</p>
+        <p class="delete-warning">This action cannot be undone. All tasks associated with this user will remain in the system.</p>
+      </div>
+      
+      <ng-template pTemplate="footer">
+        <p-button icon="pi pi-times" label="Cancel" styleClass="p-button-text" (click)="cancelDelete()"></p-button>
+        <p-button icon="pi pi-trash" label="Delete" styleClass="p-button-danger" (click)="deleteUser()"></p-button>
+      </ng-template>
+    </p-dialog>
+  </div>

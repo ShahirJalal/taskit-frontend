@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router'; // Import Router
+import { Router } from '@angular/router';
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -11,33 +11,55 @@ export class RegisterComponent {
   username: string = '';
   email: string = '';
   password: string = '';
+  confirmPassword: string = '';
+  errorMessage: string = '';
+  loading: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router) { } // Inject Router
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
+
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/tasks']);
+    }
+  }
 
   onSubmit() {
-    // Add 'user' role to the user data before registration
-    const userData = {
-      username: this.username,
-      email: this.email,
-      password: this.password,
-      role: 'user'
-    };
 
-    this.http.post<any>('https://taskit-backend-551e091e845d.herokuapp.com/api/users', userData)
-    // this.http.post<any>('http://localhost:8080/api/users', userData)
-      .subscribe(
-        response => {
-          // Handle successful registration
-          console.log('Registration successful:', response);
-          // Redirect to login page
-          setTimeout(() => {
-            this.router.navigate(['/confirmation']);
-          }, 2000);
+    this.errorMessage = '';
+
+
+    if (!this.username || !this.email || !this.password) {
+      this.errorMessage = 'All fields are required';
+      return;
+    }
+
+    if (this.password !== this.confirmPassword) {
+      this.errorMessage = 'Passwords do not match';
+      return;
+    }
+
+
+    this.loading = true;
+
+
+    this.authService.register(this.username, this.email, this.password)
+      .subscribe({
+        next: () => {
+          this.loading = false;
+          this.router.navigate(['/confirmation']);
         },
-        error => {
-          // Handle registration error
+        error: (error) => {
+          this.loading = false;
           console.error('Registration failed:', error);
+
+          if (error.status === 409) {
+            this.errorMessage = 'Username or email already exists';
+          } else {
+            this.errorMessage = 'Registration failed. Please try again.';
+          }
         }
-      );
+      });
   }
 }
