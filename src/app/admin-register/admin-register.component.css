@@ -47,6 +47,24 @@ form {
     width: 100%;
 }
 
+/* Fix password field width */
+.form-group p-password ::ng-deep .p-password {
+    width: 100%;
+}
+
+.form-group p-password ::ng-deep .p-password-input {
+    width: 100%;
+}
+
+/* Make the button full-width */
+form p-button {
+    width: 100%;
+}
+
+form p-button ::ng-deep .p-button {
+    width: 100%;
+}
+
 .error-message {
     color: #f44336;
     margin-bottom: 10px;

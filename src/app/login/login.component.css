@@ -45,6 +45,14 @@ form {
   width: 100%;
 }
 
+form p-button {
+  width: 100%;
+}
+
+form p-button ::ng-deep .p-button {
+  width: 100%;
+}
+
 .error-message {
   color: #f44336;
   margin-bottom: 10px;
@@ -113,13 +121,8 @@ form {
   text-decoration: underline;
 }
 
-
 @media (max-width: 480px) {
   .login-container {
     padding: 20px;
-  }
-
-  form p-button {
-    width: 100%;
   }
 }

@@ -40,7 +40,7 @@
             {{ errorMessage }}
         </div>
 
-        <p-button type="submit" label="Create Admin" icon="pi pi-user-plus" [loading]="loading"
+        <p-button type="submit" label="Create Admin" [loading]="loading"
             [disabled]="!adminForm.valid || !apiKey || loading">
         </p-button>
     </form>

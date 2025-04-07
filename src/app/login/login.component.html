@@ -1,61 +1,43 @@
 <div class="login-container">
   <h2>Login to TaskIt</h2>
-  
+
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="username">Username</label>
-      <input 
-        pInputText 
-        type="text" 
-        id="username" 
-        name="username" 
-        [(ngModel)]="username" 
-        placeholder="Enter username" 
-        required
-        [disabled]="loading">
+      <input pInputText type="text" id="username" name="username" [(ngModel)]="username" placeholder="Enter username"
+        required [disabled]="loading">
     </div>
-    
+
     <div class="form-group">
       <label for="password">Password</label>
-      <p-password 
-        id="password" 
-        name="password" 
-        [(ngModel)]="password" 
-        placeholder="Enter password" 
-        [feedback]="false"
-        [toggleMask]="true"
-        [disabled]="loading">
+      <p-password id="password" name="password" [(ngModel)]="password" placeholder="Enter password" [feedback]="false"
+        [toggleMask]="true" [disabled]="loading">
       </p-password>
     </div>
-    
+
     <div *ngIf="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
-    
-    <p-button 
-      type="submit" 
-      label="Login" 
-      icon="pi pi-sign-in" 
-      [loading]="loading"
-      [disabled]="!username || !password || loading">
+
+    <p-button type="submit" label="Login" [loading]="loading" [disabled]="!username || !password || loading">
     </p-button>
-    
+
     <div class="register-link">
       Don't have an account? <a routerLink="/register">Register</a>
     </div>
   </form>
-  
+
   <div class="repo-links">
     <p>Check out the project repositories:</p>
     <div class="repo-buttons">
       <a href="https://github.com/ShahirJalal/taskit-frontend" target="_blank">
-        <p-button label="Frontend Repo" icon="pi pi-github" styleClass="p-button-outlined"></p-button>
+        <p-button label="Frontend Repo" icon="pi pi-github" iconPos="left" styleClass="p-button-outlined"></p-button>
       </a>
       <a href="https://github.com/ShahirJalal/taskit-backend" target="_blank">
-        <p-button label="Backend Repo" icon="pi pi-github" styleClass="p-button-outlined"></p-button>
+        <p-button label="Backend Repo" icon="pi pi-github" iconPos="left" styleClass="p-button-outlined"></p-button>
       </a>
     </div>
-    
+
     <div class="admin-register-link">
       <a routerLink="/admin-register">Create Admin Account</a>
     </div>
